@@ -2,13 +2,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Created by satheessh on 9/27/16.
+ * Created by satheessh on 9/28/16.
  */
-public class UnionTest {
+public class UnionQuickTest {
     @Test
     public void find() throws Exception {
 
-        Union u = new Union(10);
+        UnionQuick u = new UnionQuick(10);
         u.union(0, 1);
         u.union(8, 9);
         Assert.assertTrue(u.find(1, 0));
@@ -19,7 +19,7 @@ public class UnionTest {
 
     }
 
-    @Test
+    //@Test
     public void root() throws Exception {
 
         Union u = new Union(10);
@@ -35,6 +35,5 @@ public class UnionTest {
 
 
     }
-
 
 }

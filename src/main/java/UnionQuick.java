@@ -1,17 +1,20 @@
 /**
  * Created by satheessh on 9/15/16.
  */
-public class Union {
+public class UnionQuick {
 
 
     private int a[];
+    private int size[];
 
 
-    public Union(int n) {
+    public UnionQuick(int n) {
 
         a = new int[n];
+        size = new int[n];
         for (int i = 0; i < n; i++) {
             a[i] = i;
+            size[i] = 1;
         }
     }
 
@@ -31,9 +34,17 @@ public class Union {
 
     public void union(int i, int j) {
 
+        int l = root(i);
+        int r = root(j);
 
-        a[j] = root(i);
+        if (size[l] >= size[r]) {
+            size[l] = size[l] + 1;
+            a[j] = l;
+        } else {
 
+            size[j] = size[j] + 1;
+            a[i] = r;
+        }
     }
 
 
