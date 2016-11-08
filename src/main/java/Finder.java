@@ -91,7 +91,7 @@ public class Finder {
 
     public static void main(String args[]) {
         int[] a = {1, 2, 3, 4, 5, 6, 8, 10, 12, 13, 16};
-        findMissingNumber(a, 16, 4);
+        System.out.println(findMissingNumber(a, 16, 4));
 
     }
 
