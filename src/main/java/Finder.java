@@ -29,47 +29,38 @@ public class Finder {
         while (!missingRange.isEmpty()) {
             System.out.println("Will iterate the input array. ");
             Value value = missingRange.poll();
-            int bucketSize;
 
-            if (value.end - value.start + 1 > bufferSize / 2) {
-                bucketSize = bufferSize / 2;
-            } else {
-                bucketSize = value.end - value.start + 1;
-            }
+            int range = (int) ceil((value.end - value.start + 1.0) / (bufferSize / 2));
+            int bucketSize = (int) ceil((value.end - value.start + 1.0) / range);
 
-
-            int rangeSize = (int) ceil((value.end - value.start + 1.0) / bucketSize);
-            int adjustedBucketSize = (int) ceil((value.end - value.start + 1.0) / rangeSize);
-
-            int[] bucket = new int[adjustedBucketSize];
-            int[] count = new int[adjustedBucketSize];
+            int[] bucket = new int[bucketSize];
+            int[] count = new int[bucketSize];
 
 
             for (int i = 0; i < allNumbers.length; i++) {
-
-                if (value.end >= allNumbers[i] && allNumbers[i] >= value.start) {
-                    int bucketIndex = (allNumbers[i] - value.start) / rangeSize;
+                if (value.start <= allNumbers[i] && value.end >= allNumbers[i]) {
+                    int bucketIndex = (allNumbers[i] - value.start) / range;
                     bucket[bucketIndex] = bucket[bucketIndex] + allNumbers[i];
                     count[bucketIndex]++;
                 }
             }
 
 
-            for (int i = 0; i < adjustedBucketSize; i++) {
+            for (int i = 0; i < bucketSize; i++) {
 
-                int indexStartingNumber = value.start + i * rangeSize;
+                int indexStartingNumber = value.start + i * range;
                 int indexEndingNumber;
-                int spillover = (value.end - value.start + 1) % rangeSize;
-                if (i == adjustedBucketSize - 1 && spillover != 0) {
+                int spillover = (value.end - value.start + 1) % range;
+                if (i == bucketSize - 1 && spillover != 0) {
                     indexEndingNumber = indexStartingNumber - 1 + spillover;
                 } else {
-                    indexEndingNumber = indexStartingNumber + rangeSize - 1;
+                    indexEndingNumber = indexStartingNumber + range - 1;
                 }
 
                 int rangeSum = indexEndingNumber * (indexEndingNumber + 1) / 2
                         - (indexStartingNumber - 1) * indexStartingNumber / 2;
 
-                if (bucket[i] < rangeSum && count[i] == rangeSize - 1) {
+                if (bucket[i] < rangeSum && count[i] == range - 1) {
                     int missingNumber = rangeSum - bucket[i];
                     result.add(missingNumber);
                     System.out.println(missingNumber);
