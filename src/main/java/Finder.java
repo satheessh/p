@@ -37,7 +37,7 @@ public class Finder {
 
         while (!missingRangeQueue.isEmpty()) {
             Value value = missingRangeQueue.poll();
-            System.out.println("Iterating : " + iterationCount + "  " + value);
+            System.out.println("Iterating : " + ++iterationCount + "  " + value);
 
             int range = (int) ceil((value.end - value.start + 1.0) / (bufferSize / 2));
             int bucketSize = (int) ceil((value.end - value.start + 1.0) / range);

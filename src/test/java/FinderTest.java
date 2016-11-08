@@ -94,4 +94,13 @@ public class FinderTest {
     }
 
 
+    @Test
+    public void findMissingNumberTest11() {
+        int[] a = {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16};
+        List<Integer> actual = Finder.findMissingNumber(a, 16, 8);
+        Collections.sort(actual);
+        assertEquals(asList(1, 2, 15), actual);
+    }
+
+
 }
