@@ -39,21 +39,21 @@ public class Finder {
             Value value = missingRangeQueue.poll();
             System.out.println("Iterating : " + ++iterationCount + "  " + value);
 
-            int range = (int) ceil((value.end - value.start + 1.0) / (bufferSize / 2));
-            int bucketSize = (int) ceil((value.end - value.start + 1.0) / range);
+            int rangeSize = (int) ceil((value.end - value.start + 1.0) / (bufferSize / 2));
+            int bucketSize = (int) ceil((value.end - value.start + 1.0) / rangeSize);
             int[] bucket = new int[bucketSize];
             int[] count = new int[bucketSize];
-            updateBuckets(allNumbers, value, range, bucket, count);
-            findMissingNumberFromBuckets(missingRangeQueue, result, value, range,
+            updateBuckets(allNumbers, value, rangeSize, bucket, count);
+            findMissingNumberFromBuckets(missingRangeQueue, result, value, rangeSize,
                     bucketSize, bucket, count);
         }
         return result;
     }
 
-    private static void updateBuckets(int[] allNumbers, Value value, int range, int[] bucket, int[] count) {
+    private static void updateBuckets(int[] allNumbers, Value value, int rangeSize, int[] bucket, int[] count) {
         for (int i = 0; i < allNumbers.length; i++) {
             if (value.start <= allNumbers[i] && value.end >= allNumbers[i]) {
-                int bucketIndex = (allNumbers[i] - value.start) / range;
+                int bucketIndex = (allNumbers[i] - value.start) / rangeSize;
                 bucket[bucketIndex] = bucket[bucketIndex] + allNumbers[i];
                 count[bucketIndex]++;
             }
@@ -61,22 +61,27 @@ public class Finder {
     }
 
     private static void findMissingNumberFromBuckets(Queue<Value> missingRange, List<Integer> result,
-                                                     Value value, int range, int bucketSize, int[] bucket, int[] count) {
+                                                     Value value, int rangeSize, int bucketSize, int[] bucket, int[] count) {
         for (int i = 0; i < bucketSize; i++) {
 
-            int indexStartingNumber = value.start + i * range;
+            int indexStartingNumber = value.start + i * rangeSize;
             int indexEndingNumber;
-            int spillover = (value.end - value.start + 1) % range;
+
+            /** Hnadles below scenario.
+             * Example: range is 1 to 5 and bucket size is 2.
+             * The last bucket will have only number 5.
+             * **/
+            int spillover = (value.end - value.start + 1) % rangeSize;
             if (i == bucketSize - 1 && spillover != 0) {
                 indexEndingNumber = indexStartingNumber - 1 + spillover;
             } else {
-                indexEndingNumber = indexStartingNumber + range - 1;
+                indexEndingNumber = indexStartingNumber + rangeSize - 1;
             }
 
             int rangeSum = indexEndingNumber * (indexEndingNumber + 1) / 2
                     - (indexStartingNumber - 1) * indexStartingNumber / 2;
 
-            if (bucket[i] < rangeSum && count[i] == range - 1) {
+            if (bucket[i] < rangeSum && count[i] == rangeSize - 1) {
                 int missingNumber = rangeSum - bucket[i];
                 result.add(missingNumber);
                 //System.out.println(missingNumber);
