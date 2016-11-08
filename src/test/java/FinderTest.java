@@ -3,6 +3,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -90,16 +91,28 @@ public class FinderTest {
         int[] a = {};
         List<Integer> actual = Finder.findMissingNumber(a, 18, 9);
         Collections.sort(actual);
-        assertEquals(asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18), actual);
+        assertEquals(asList(5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18), actual);
     }
 
 
     @Test
     public void findMissingNumberTest11() {
-        int[] a = {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16};
-        List<Integer> actual = Finder.findMissingNumber(a, 16, 8);
+        List<Integer> removedList = new LinkedList<Integer>();
+        removedList.add(100);
+        removedList.add(101);
+        removedList.add(102);
+        removedList.add(103);
+        int lastNumber = 8192;
+        int a[] = new int[lastNumber - removedList.size()];
+        for (int i = 1, index = 0; i <= lastNumber; i++) {
+            if (!removedList.contains(i)) {
+                a[index] = i;
+                index++;
+            }
+        }
+        List<Integer> actual = Finder.findMissingNumber(a, lastNumber, 16);
         Collections.sort(actual);
-        assertEquals(asList(1, 2, 15), actual);
+        assertEquals(removedList, actual);
     }
 
 
