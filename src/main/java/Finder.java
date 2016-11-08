@@ -45,33 +45,38 @@ public class Finder {
                 }
             }
 
-
-            for (int i = 0; i < bucketSize; i++) {
-
-                int indexStartingNumber = value.start + i * range;
-                int indexEndingNumber;
-                int spillover = (value.end - value.start + 1) % range;
-                if (i == bucketSize - 1 && spillover != 0) {
-                    indexEndingNumber = indexStartingNumber - 1 + spillover;
-                } else {
-                    indexEndingNumber = indexStartingNumber + range - 1;
-                }
-
-                int rangeSum = indexEndingNumber * (indexEndingNumber + 1) / 2
-                        - (indexStartingNumber - 1) * indexStartingNumber / 2;
-
-                if (bucket[i] < rangeSum && count[i] == range - 1) {
-                    int missingNumber = rangeSum - bucket[i];
-                    result.add(missingNumber);
-                    System.out.println(missingNumber);
-                } else if (rangeSum == bucket[i]) {
-                    System.out.println("found all numbers in this range");
-                } else {
-                    missingRange.add(new Value(indexStartingNumber, indexEndingNumber));
-                }
-            }
+            findMissingNumberFromBuckets(missingRange, result, value, range,
+                    bucketSize, bucket, count);
         }
         return result;
+    }
+
+    private static void findMissingNumberFromBuckets(Queue<Value> missingRange, List<Integer> result,
+                                                     Value value, int range, int bucketSize, int[] bucket, int[] count) {
+        for (int i = 0; i < bucketSize; i++) {
+
+            int indexStartingNumber = value.start + i * range;
+            int indexEndingNumber;
+            int spillover = (value.end - value.start + 1) % range;
+            if (i == bucketSize - 1 && spillover != 0) {
+                indexEndingNumber = indexStartingNumber - 1 + spillover;
+            } else {
+                indexEndingNumber = indexStartingNumber + range - 1;
+            }
+
+            int rangeSum = indexEndingNumber * (indexEndingNumber + 1) / 2
+                    - (indexStartingNumber - 1) * indexStartingNumber / 2;
+
+            if (bucket[i] < rangeSum && count[i] == range - 1) {
+                int missingNumber = rangeSum - bucket[i];
+                result.add(missingNumber);
+                System.out.println(missingNumber);
+            } else if (rangeSum == bucket[i]) {
+                System.out.println("found all numbers in this range");
+            } else {
+                missingRange.add(new Value(indexStartingNumber, indexEndingNumber));
+            }
+        }
     }
 
 
