@@ -31,10 +31,9 @@ public class FinderTest {
     }
 
 
-
     @Test
     public void findMissingNumberTest3() {
-        int[] a = {1, 2, 3,  13, 16, 4, 5, 6, 8, 10, 12};
+        int[] a = {1, 2, 3, 13, 16, 4, 5, 6, 8, 10, 12};
         List<Integer> actual = Finder.findMissingNumber(a, 16, 8);
         assertEquals(asList(7, 9, 11, 14, 15), actual);
     }
@@ -42,21 +41,21 @@ public class FinderTest {
 
     @Test
     public void findMissingNumberTest4() {
-        int[] a = {1, 2, 3,  13, 16, 4, 5, 6, 8, 10, 12};
+        int[] a = {1, 2, 3, 13, 16, 4, 5, 6, 8, 10, 12};
         List<Integer> actual = Finder.findMissingNumber(a, 16, 8);
         assertEquals(asList(7, 9, 11, 14, 15), actual);
     }
 
     @Test
     public void findMissingNumberTest5() {
-        int[] a = {1, 2, 3,  13, 16, 4, 5, 6, 8, 10, 12};
+        int[] a = {1, 2, 3, 13, 16, 4, 5, 6, 8, 10, 12};
         List<Integer> actual = Finder.findMissingNumber(a, 16, 16);
         assertEquals(asList(7, 9, 11, 14, 15), actual);
     }
 
     @Test
     public void findMissingNumberTest6() {
-        int[] a = {1, 2, 3,  13, 16, 4, 5, 6, 8, 10, 12};
+        int[] a = {1, 2, 3, 13, 16, 4, 5, 6, 8, 10, 12};
         List<Integer> actual = Finder.findMissingNumber(a, 16, 32);
         assertEquals(asList(7, 9, 11, 14, 15), actual);
     }
@@ -64,7 +63,7 @@ public class FinderTest {
 
     @Test
     public void findMissingNumberTest7() {
-        int[] a = {1, 2, 3,  13, 4, 5, 6, 8, 10, 12};
+        int[] a = {1, 2, 3, 13, 4, 5, 6, 8, 10, 12};
         List<Integer> actual = Finder.findMissingNumber(a, 16, 5);
         assertEquals(asList(7, 9, 11, 14, 15, 16), actual);
     }
@@ -93,4 +92,6 @@ public class FinderTest {
         Collections.sort(actual);
         assertEquals(asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18), actual);
     }
+
+
 }

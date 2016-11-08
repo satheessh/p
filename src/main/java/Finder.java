@@ -15,40 +15,49 @@ public class Finder {
             this.end = end;
         }
 
+        @Override
+        public String toString() {
+            return "Value{" +
+                    "start=" + start +
+                    ", end=" + end +
+                    '}';
+        }
+
         public int start;
         public int end;
     }
 
 
     public static List<Integer> findMissingNumber(int[] allNumbers, int lastNumber, int bufferSize) {
-        Queue<Value> missingRange = new LinkedList<Value>();
+        Queue<Value> missingRangeQueue = new LinkedList<Value>();
         List<Integer> result = new LinkedList<Integer>();
 
-        missingRange.add(new Value(1, lastNumber));
+        missingRangeQueue.add(new Value(1, lastNumber));
+        long iterationCount = 0;
 
-        while (!missingRange.isEmpty()) {
-            System.out.println("Will iterate the input array. ");
-            Value value = missingRange.poll();
+        while (!missingRangeQueue.isEmpty()) {
+            Value value = missingRangeQueue.poll();
+            System.out.println("Iterating : " + iterationCount + "  " + value);
 
             int range = (int) ceil((value.end - value.start + 1.0) / (bufferSize / 2));
             int bucketSize = (int) ceil((value.end - value.start + 1.0) / range);
-
             int[] bucket = new int[bucketSize];
             int[] count = new int[bucketSize];
-
-
-            for (int i = 0; i < allNumbers.length; i++) {
-                if (value.start <= allNumbers[i] && value.end >= allNumbers[i]) {
-                    int bucketIndex = (allNumbers[i] - value.start) / range;
-                    bucket[bucketIndex] = bucket[bucketIndex] + allNumbers[i];
-                    count[bucketIndex]++;
-                }
-            }
-
-            findMissingNumberFromBuckets(missingRange, result, value, range,
+            updateBuckets(allNumbers, value, range, bucket, count);
+            findMissingNumberFromBuckets(missingRangeQueue, result, value, range,
                     bucketSize, bucket, count);
         }
         return result;
+    }
+
+    private static void updateBuckets(int[] allNumbers, Value value, int range, int[] bucket, int[] count) {
+        for (int i = 0; i < allNumbers.length; i++) {
+            if (value.start <= allNumbers[i] && value.end >= allNumbers[i]) {
+                int bucketIndex = (allNumbers[i] - value.start) / range;
+                bucket[bucketIndex] = bucket[bucketIndex] + allNumbers[i];
+                count[bucketIndex]++;
+            }
+        }
     }
 
     private static void findMissingNumberFromBuckets(Queue<Value> missingRange, List<Integer> result,
@@ -70,11 +79,11 @@ public class Finder {
             if (bucket[i] < rangeSum && count[i] == range - 1) {
                 int missingNumber = rangeSum - bucket[i];
                 result.add(missingNumber);
-                System.out.println(missingNumber);
+                //System.out.println(missingNumber);
             } else if (rangeSum == bucket[i]) {
-                System.out.println("found all numbers in this range");
+                //System.out.println("found all numbers in this range");
             } else {
-                missingRange.add(new Value(indexStartingNumber, indexEndingNumber));
+                missingRange.offer(new Value(indexStartingNumber, indexEndingNumber));
             }
         }
     }
