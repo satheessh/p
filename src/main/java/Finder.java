@@ -1,6 +1,7 @@
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Stack;
 
 import static java.lang.Math.ceil;
 
@@ -29,16 +30,19 @@ public class Finder {
 
 
     public static List<Integer> findMissingNumber(int[] allNumbers, int lastNumber, int bufferSize) {
-        Queue<Value> missingRangeQueue = new LinkedList<Value>();
+        if (bufferSize < 4) {
+            System.out.println("not enough buffer");
+            return null;
+        }
+        Stack<Value> missingRangeQueue = new Stack<Value>();
         List<Integer> result = new LinkedList<Integer>();
 
         missingRangeQueue.add(new Value(1, lastNumber));
         long iterationCount = 0;
 
         while (!missingRangeQueue.isEmpty()) {
-            Value value = missingRangeQueue.poll();
+            Value value = missingRangeQueue.pop();
             System.out.println("Iterating : " + ++iterationCount + "  " + value);
-
             int rangeSize = (int) ceil((value.end - value.start + 1.0) / (bufferSize / 2));
             int bucketSize = (int) ceil((value.end - value.start + 1.0) / rangeSize);
             int[] bucket = new int[bucketSize];
@@ -60,7 +64,7 @@ public class Finder {
         }
     }
 
-    private static void findMissingNumberFromBuckets(Queue<Value> missingRange, List<Integer> result,
+    private static void findMissingNumberFromBuckets(Stack<Value> missingRange, List<Integer> result,
                                                      Value value, int rangeSize, int bucketSize, int[] bucket, int[] count) {
         for (int i = 0; i < bucketSize; i++) {
 
@@ -88,7 +92,7 @@ public class Finder {
             } else if (rangeSum == bucket[i]) {
                 //System.out.println("found all numbers in this range");
             } else {
-                missingRange.offer(new Value(indexStartingNumber, indexEndingNumber));
+                missingRange.push(new Value(indexStartingNumber, indexEndingNumber));
             }
         }
     }
